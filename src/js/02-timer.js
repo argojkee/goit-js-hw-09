@@ -91,3 +91,22 @@ function enableButton() {
 function disabledButton() {
   startBtn.setAttribute('disabled', 'disabled');
 }
+
+//Styles
+
+const timerEl = document.querySelector('.timer');
+const fieldEl = document.querySelectorAll('.field');
+
+timerEl.style.display = 'flex';
+timerEl.style.columnGap = '20px';
+
+fieldEl.forEach(element => {
+  element.style.display = 'flex';
+  element.style.flexDirection = 'column';
+  element.style.alignItems = 'center';
+  element.style.fontSize = '20px';
+  element.firstElementChild.style.backgroundColor = 'blue';
+  element.firstElementChild.style.width = '100%';
+  element.firstElementChild.style.textAlign = 'center';
+  element.lastElementChild.style.backgroundColor = 'yellow';
+});
