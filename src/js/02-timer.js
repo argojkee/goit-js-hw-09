@@ -11,9 +11,12 @@ const secondsEl = document.querySelector('[data-seconds]');
 let selectedTime = null;
 let intervalId = null;
 
-startBtn.setAttribute('disabled', 'disabled');
+disabledButton();
 
-startBtn.addEventListener('click', onStartTimerBtn);
+startBtn.addEventListener('click', () => {
+  onStartTimerBtn();
+  disabledButton();
+});
 
 const options = {
   enableTime: true,
@@ -28,11 +31,11 @@ const options = {
         'Unfortunately, you cannot select a date in the past.',
         'Okay'
       );
-      startBtn.setAttribute('disabled', 'disabled');
+      disabledButton();
       return;
     }
 
-    startBtn.removeAttribute('disabled');
+    enableButton();
     selectedTime = Date.parse(selectedDates[0]);
   },
 };
@@ -53,7 +56,7 @@ function onStartTimerBtn() {
 
     if (differentTime < 1000) {
       clearInterval(intervalId);
-      startBtn.setAttribute('disabled', 'disabled');
+      disabledButton();
     }
 
     daysEl.textContent = addLeadingZero(days);
@@ -79,4 +82,12 @@ function convertMs(ms) {
 function addLeadingZero(value) {
   const updateValue = String(value).padStart(2, '0');
   return updateValue;
+}
+
+function enableButton() {
+  startBtn.removeAttribute('disabled');
+}
+
+function disabledButton() {
+  startBtn.setAttribute('disabled', 'disabled');
 }
