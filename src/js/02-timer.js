@@ -8,14 +8,35 @@ const daysEl = document.querySelector('[data-days]');
 const hoursEl = document.querySelector('[data-hours]');
 const minutesEl = document.querySelector('[data-minutes]');
 const secondsEl = document.querySelector('[data-seconds]');
+const timerEl = document.querySelector('.timer');
+const fieldEl = document.querySelectorAll('.field');
+
+const btnResetEl = document.createElement('button');
+btnResetEl.type = 'button';
+btnResetEl.setAttribute('data-reset', '');
+btnResetEl.textContent = 'Reset';
+timerEl.insertAdjacentElement('beforebegin', btnResetEl);
+
 let selectedTime = null;
 let intervalId = null;
 
-disabledButton();
+resetDisabled();
+startDisabled();
 
+btnResetEl.addEventListener('click', () => {
+  inputEnabled();
+  resetDisabled();
+  clearInterval(intervalId);
+  daysEl.textContent = '00';
+  hoursEl.textContent = '00';
+  minutesEl.textContent = '00';
+  secondsEl.textContent = '00';
+});
 startBtn.addEventListener('click', () => {
+  startDisabled();
+  inputDisabled();
+  resetEnabled();
   onStartTimerBtn();
-  disabledButton();
 });
 
 const options = {
@@ -31,11 +52,11 @@ const options = {
         'Unfortunately, you cannot select a date in the past.',
         'Okay'
       );
-      disabledButton();
+      startDisabled();
       return;
     }
 
-    enableButton();
+    startEnabled();
     selectedTime = Date.parse(selectedDates[0]);
   },
 };
@@ -56,7 +77,7 @@ function onStartTimerBtn() {
 
     if (differentTime < 1000) {
       clearInterval(intervalId);
-      disabledButton();
+      startDisabled();
     }
 
     daysEl.textContent = addLeadingZero(days);
@@ -84,18 +105,30 @@ function addLeadingZero(value) {
   return updateValue;
 }
 
-function enableButton() {
+function startDisabled() {
+  startBtn.setAttribute('disabled', 'disabled');
+}
+function startEnabled() {
   startBtn.removeAttribute('disabled');
 }
 
-function disabledButton() {
-  startBtn.setAttribute('disabled', 'disabled');
+function inputDisabled() {
+  inputEl.setAttribute('disabled', 'disabled');
+}
+
+function inputEnabled() {
+  inputEl.removeAttribute('disabled');
+}
+
+function resetEnabled() {
+  btnResetEl.removeAttribute('disabled');
+}
+
+function resetDisabled() {
+  btnResetEl.setAttribute('disabled', 'disabled');
 }
 
 //Styles
-
-const timerEl = document.querySelector('.timer');
-const fieldEl = document.querySelectorAll('.field');
 
 timerEl.style.display = 'flex';
 timerEl.style.columnGap = '20px';
@@ -108,5 +141,6 @@ fieldEl.forEach(element => {
   element.firstElementChild.style.backgroundColor = 'blue';
   element.firstElementChild.style.width = '100%';
   element.firstElementChild.style.textAlign = 'center';
+  element.firstElementChild.style.color = 'white';
   element.lastElementChild.style.backgroundColor = 'yellow';
 });
