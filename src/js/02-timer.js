@@ -77,6 +77,8 @@ function onStartTimerBtn() {
 
     if (differentTime < 1000) {
       clearInterval(intervalId);
+      inputEnabled();
+      resetDisabled();
       startDisabled();
     }
 
